@@ -33,7 +33,6 @@ import (
 	"tailscale.com/types/logger"
 	"tailscale.com/types/logid"
 	"tailscale.com/types/netmap"
-	"tailscale.com/util/eventbus"
 	"tailscale.com/wgengine"
 	"tailscale.com/wgengine/netstack"
 	"tailscale.com/wgengine/router"
@@ -268,9 +267,7 @@ func (a *App) newBackend(dataDir, directFileRoot string, appCtx AppContext, stor
 	} else {
 		logID.UnmarshalText([]byte(storedLogID))
 	}
-	bus := eventbus.New()
-	defer bus.Close()
-	netMon, err := netmon.New(bus, logf)
+	netMon, err := netmon.New(logf)
 	if err != nil {
 		log.Printf("netmon.New: %w", err)
 	}
